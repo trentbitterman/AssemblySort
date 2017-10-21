@@ -1,0 +1,14 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	ExitWhileI        303C
+//	ExitWhileJ        3039
+//	Main              3002
+//	Array             300C
+//	Finish            300A
+//	Stack             3001
+//	InsertionSort     301B
+//	WhileI            3022
+//	WhileJ            3028
+//	Count             300B

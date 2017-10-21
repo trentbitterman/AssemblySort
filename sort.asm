@@ -12,7 +12,7 @@ Main            LD    R6, Stack         ; Stack initialization
                 LD    R5, Stack
 
                 LEA   R0, Array         ; Load the address of the array to be sorted
-                LEA   R1, Count         ; Load the number of items in array
+                LD    R1, Count         ; Load the number of items in array
 
                 PUSH  R0                ; Push address of array onto the stack
                 PUSH  R1                ; Push count onto stack
@@ -59,27 +59,36 @@ InsertionSort
 WhileI          NOT  R3, R2             ; Two's comp i
                 ADD  R3, R3, #1         ;
                 ADD  R4, R1, R3         ; Subtract i from count
-                BRnz ExitWhile          ; Exit while loop (array is sorted)
+                BRnz ExitWhileI          ; Exit while loop (array is sorted)
                 .ZERO R3                ; Zero out R3 to hold j
                 ADD  R3, R2, #0         ; Copy i to j
-WhileJ          NOT  R4, R3             ; Two's comp j
-                ADD  R4, R4, #1         ;
-                ADD  R4, R3, R4         ; Subtract j from j
+WhileJ          .SETCC R3               ; Set condition code for j
                 BRnz ExitWhileJ         ; Exit inner loop
                 ADD  R4, R3, #-1        ; Find j - 1
                 ADD  R4, R0, R4         ; Find addr of A[j-1]
-                LDR  R4, R4, #0         ; Load value at A[j-1]
+                LDR  R1, R4, #0         ; Load value at A[j-1]
                 ADD  R5, R0, R3         ; Find addr of A[j]
-                LDR  R5, R5, #0         ; Load value at A[j]
-                NOT  R5, R5             ; Two's comp A[j]
-                ADD  R5, R5, #1         ;
-                ; TODO:
-                ;  * Calculate A[j-1] - A[j]
-                ;  * Maybe store some registers in mem to free them up
+                LDR  R7, R5, #0         ; Load value at A[j]
+                NOT  R7, R7             ; Two's comp A[j]
+                ADD  R7, R7, #1         ;
+                ADD  R7, R1, R7         ; A[j-1] - A[j]
+                BRnz ExitWhileJ         ; Exit inner loop
+                LDR  R7, R5, #0         ; Load value at A[j] again
+                STR  R7, R4, #0         ; Swap values at A[j] and A[j-1]
+                STR  R1, R5, #0         ;
+                ADD  R3, R3, #-1        ; Decrement j
+                LD   R1, Count          ; Put count back in R1
+                BR   WhileJ             ; Continue j loop
 
+ExitWhileJ      ADD  R2, R2, #1         ; Increment i by 1
+                LD   R1, Count          ; Put count back in R1
+                BR   WhileI             ; Continue I loop
 
-ExitWhileJ
+ExitWhileI      POP R5                  ; Restore R5
+                POP R7                  ; Restore R7
+                RET
 
+; End of insertion sort definition
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-ExitWhileI
-
+                .END
