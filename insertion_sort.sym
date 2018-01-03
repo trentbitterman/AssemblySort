@@ -2,13 +2,13 @@
 // Scope level 0:
 //	Symbol Name       Page Address
 //	----------------  ------------
-//	ExitWhileI        303C
-//	ExitWhileJ        3039
+//	ExitWhileI        309F
+//	ExitWhileJ        309C
 //	Main              3002
-//	Array             300C
-//	Finish            300A
+//	Array             300E
+//	Finish            300C
 //	Stack             3001
-//	InsertionSort     301B
-//	WhileI            3022
-//	WhileJ            3028
-//	Count             300B
+//	InsertionSort     307C
+//	WhileI            3085
+//	WhileJ            308B
+//	Count             300D
